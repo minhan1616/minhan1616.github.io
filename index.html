@@ -1,0 +1,96 @@
+<!DOCTYPE html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Lớp Dạy - Quản lý lớp học thêm</title>
+<style>
+:root{--bg:#e9f0e4;--bg2:#f6f9f2;--cd:rgba(255,255,255,.78);--tx:#1f2d1d;--mu:#68775f;--pr:#48733f;--pt:#fff;--bd:#d6e2cf;--dg:#b4443a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#131a12;--bg2:#1a2319;--cd:rgba(34,46,32,.85);--tx:#e5eee1;--mu:#98a992;--pr:#93c58a;--pt:#10200e;--bd:#2c3b2a}}
+:root[data-theme=dark]{--bg:#131a12;--bg2:#1a2319;--cd:rgba(34,46,32,.85);--tx:#e5eee1;--mu:#98a992;--pr:#93c58a;--pt:#10200e;--bd:#2c3b2a}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;font-family:"Be Vietnam Pro",system-ui,sans-serif;background:radial-gradient(circle at 15% 0,var(--bg2),var(--bg));color:var(--tx);font-size:14px;min-height:100vh}
+#app{display:flex;min-height:100vh}
+nav{width:200px;padding:16px 10px;border-right:1px solid var(--bd);background:var(--cd);flex-shrink:0}
+nav h1{font-size:18px;margin:4px 10px 16px}
+nav button{display:block;width:100%;text-align:left;border:0;background:none;color:var(--tx);padding:10px;border-radius:9px;font:inherit;cursor:pointer;margin-bottom:2px}
+nav button.on{background:var(--pr);color:var(--pt)}
+main{flex:1;padding:18px;min-width:0}
+.hd{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.hd h2{margin:0;font-size:22px}.hd p{margin:2px 0 0;color:var(--mu)}
+.card{background:var(--cd);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:14px;backdrop-filter:blur(6px)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+.stats .card{margin:0}.stats b{font-size:22px;display:block}.stats span{color:var(--mu);font-size:12px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.b{border:1px solid var(--pr);background:var(--pr);color:var(--pt);padding:8px 14px;border-radius:9px;font:inherit;cursor:pointer}
+.b.gh{background:none;color:var(--tx);border-color:var(--bd)}.b.dg{background:var(--dg);border-color:var(--dg);color:#fff}.b.sm{padding:4px 9px;font-size:12px}
+.nv{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+table{width:100%;border-collapse:collapse}th,td{padding:9px 8px;border-bottom:1px solid var(--bd);text-align:left;vertical-align:top}
+th{background:var(--pr);color:var(--pt);font-weight:600}.tw{overflow-x:auto}
+.wk{display:grid;grid-template-columns:repeat(7,minmax(105px,1fr));gap:6px;overflow-x:auto}
+.dc{min-height:120px}.dc h4{margin:0 0 6px;font-size:12px}.dc h4 small{display:block;color:var(--mu);font-weight:400}
+.ch{border-radius:7px;padding:5px 7px;margin-bottom:4px;font-size:12px;color:#1d2a1b;cursor:pointer}
+.mo7{display:grid;grid-template-columns:repeat(7,minmax(70px,1fr));gap:4px;overflow-x:auto}
+.mc{min-height:92px;border:1px solid var(--bd);border-radius:8px;padding:4px;background:var(--cd)}.mc.out{opacity:.45}.mc.td{outline:2px solid var(--pr)}
+.mc>b{cursor:pointer;font-size:12px}.mc .ch{padding:2px 5px;margin:2px 0;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bars{display:flex;align-items:flex-end;gap:6px;height:150px}.bars div{flex:1;text-align:center;font-size:10px;color:var(--mu)}.bars i{display:block;background:var(--pr);border-radius:5px 5px 0 0;margin-bottom:3px;min-height:2px}
+.rb{margin:9px 0}.rb div{height:8px;border-radius:5px;margin-top:3px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.pill{padding:6px 12px;border-radius:99px;border:1px solid var(--bd);background:none;color:var(--tx);font:inherit;cursor:pointer}.pill.on{background:var(--pr);color:var(--pt)}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+#mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);align-items:center;justify-content:center;z-index:9;padding:14px}#mo.on{display:flex}
+.md{background:var(--bg2);border-radius:14px;padding:18px;width:100%;max-width:420px;max-height:90vh;overflow:auto}.md h3{margin:0 0 10px}
+.md label{display:block;margin-bottom:10px;color:var(--mu);font-size:12px}
+.md input,.md select,.md textarea{display:block;width:100%;margin-top:3px;padding:8px;border:1px solid var(--bd);border-radius:8px;background:var(--cd);color:var(--tx);font:inherit}
+.row{display:flex;gap:8px;margin-top:6px}.mu{color:var(--mu)}
+@media(max-width:800px){#app{flex-direction:column}nav{width:100%;display:flex;overflow-x:auto;padding:8px;border:0}nav h1{display:none}nav button{width:auto;white-space:nowrap}.g2{grid-template-columns:1fr}}
+</style></head><body><div id="app"><nav id="nv"></nav><main id="mn"></main></div><div id="mo"></div>
+<script>
+const K='lopday1',$=s=>document.querySelector(s),p2=n=>String(n).padStart(2,'0'),uid=()=>Math.random().toString(36).slice(2,9);
+const iso=d=>d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate()),dt=s=>new Date(s+'T00:00'),ad=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const ym=d=>iso(d).slice(0,7),mon=d=>ad(d,-((d.getDay()+6)%7)),tm=s=>{const[a,b]=s.split(':');return +a*60+ +b},hr=x=>(tm(x.end)-tm(x.start))/60;
+const money=n=>Math.round(n).toLocaleString('vi-VN')+' ₫',esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const DN=['CN','T2','T3','T4','T5','T6','T7'];
+function seed(){const c=[['c8','Lớp 8','#b9cf9a',300000],['c9cb','Lớp 9 CB','#f4c7c3',770000],['c9nc','Lớp 9 NC','#d5c8ec',500000],['c10','Lớp 10','#b7cde8',800000],['c11','Lớp 11','#fbe0b0',500000],['c12','Lớp 12','#cbb9a8',450000]].map(x=>({id:x[0],name:x[1],color:x[2],fee:x[3]}));
+const pat=[[1,'c10','17:00','19:00'],[1,'c11','19:00','21:00'],[2,'c9nc','17:00','19:00'],[2,'c12','19:00','21:00'],[3,'c9cb','17:00','19:00'],[3,'c11','19:00','21:00'],[4,'c8','17:00','19:00'],[4,'c12','19:00','21:00'],[5,'c9nc','17:00','19:00'],[5,'c10','19:00','21:00'],[6,'c11','07:30','09:30'],[6,'c8','09:30','11:30'],[0,'c9cb','07:30','09:30'],[0,'c12','09:30','11:30']];
+const fee=Object.fromEntries(c.map(x=>[x.id,x.fee])),se=[];
+for(let d=new Date(2026,8,1);d<=new Date(2026,9,31);d=ad(d,1))pat.filter(x=>x[0]==d.getDay()).forEach(x=>se.push({id:uid(),classId:x[1],date:iso(d),start:x[2],end:x[3],fee:fee[x[1]]}));
+const st=[['Khánh Hà','c8'],['Duy Anh','c9cb'],['Như Quang','c9cb'],['Minh Anh','c9nc'],['Thùy Linh','c9nc'],['Quỳnh Anh','c10']].map(x=>({id:uid(),name:x[0],classId:x[1]}));
+const lg=[['2026-09-02','Chữa bài tập hình bình hành','60',"Tốt",'Xác định được tính chất, trình bày đúng nhưng chưa rõ ràng ý tưởng.'],['2026-09-05','Ôn tập hằng đẳng thức','80','Tốt','Quên hằng đẳng thức bậc 3.']].map(x=>({id:uid(),studentId:st[0].id,date:x[0],content:x[1],btvn:x[2],yt:x[3],note:x[4]}));
+return{classes:c,sessions:se,students:st,logs:lg,paid:{}}}
+let S;try{S=JSON.parse(localStorage.getItem(K))}catch(e){}S=S||seed();
+const save=()=>{try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}};
+let V='ov',M=ym(new Date()),cur=new Date(),mode='week',jsel=null,fcl='';
+const cls=id=>S.classes.find(c=>c.id==id)||{name:'?',color:'#ccc',fee:0};
+const mshift=n=>{const[y,m]=M.split('-');M=ym(new Date(+y,+m-1+n,1));go()};
+const mlab=()=>{const[y,m]=M.split('-');return 'Tháng '+ +m+'/'+y};
+const mnav=()=>`<div class="nv"><button class="b gh sm" onclick="mshift(-1)">‹</button><b>${mlab()}</b><button class="b gh sm" onclick="mshift(1)">›</button></div>`;
+const inM=(x,m)=>x.date.startsWith(m),sum=(a,f)=>a.reduce((s,x)=>s+f(x),0);
+const chip=x=>`<div class="ch" style="background:${cls(x.classId).color}" onclick="editS('${x.id}')"><b>${x.start}-${x.end}</b><br>${esc(cls(x.classId).name)} · ${money(x.fee)}</div>`;
+function modal(t,f,ok,del){$('#mo').innerHTML=`<div class="md"><h3>${t}</h3>${f.map(x=>`<label>${x.l}${x.t=='select'?`<select id="f_${x.k}">${x.o.map(o=>`<option value="${o[0]}" ${o[0]==x.v?'selected':''}>${esc(o[1])}</option>`).join('')}</select>`:x.t=='area'?`<textarea id="f_${x.k}" rows="3">${esc(x.v)}</textarea>`:`<input id="f_${x.k}" type="${x.t||'text'}" value="${esc(x.v)}">`}</label>`).join('')}<div class="row"><button class="b" id="ms">Lưu</button>${del?'<button class="b dg" id="md">Xóa</button>':''}<button class="b gh" id="mc">Hủy</button></div></div>`;
+$('#mo').classList.add('on');const cl=()=>$('#mo').classList.remove('on');$('#mc').onclick=cl;
+$('#ms').onclick=()=>{const v={};f.forEach(x=>v[x.k]=$('#f_'+x.k).value);if(ok(v)!==false){save();cl();go()}};
+if(del)$('#md').onclick=()=>{del();save();cl();go()}}
+const copts=()=>S.classes.map(c=>[c.id,c.name]);
+function addS(date,s){const x=s||{};modal(s?'Sửa buổi học':'Ghi buổi học mới',[{k:'c',l:'Lớp',t:'select',o:copts(),v:x.classId||S.classes[0]?.id},{k:'d',l:'Ngày',t:'date',v:x.date||date||iso(new Date())},{k:'s',l:'Bắt đầu',t:'time',v:x.start||'17:00'},{k:'e',l:'Kết thúc',t:'time',v:x.end||'19:00'},{k:'f',l:'Học phí buổi này (₫, để trống = mặc định của lớp)',t:'number',v:x.fee??''},...(s?[]:[{k:'r',l:'Lặp lại hằng tuần (số tuần thêm)',t:'number',v:0}])],v=>{if(!v.c||!v.d||tm(v.e)<=tm(v.s))return false;const fee=v.f===''?cls(v.c).fee:+v.f;
+if(s){Object.assign(s,{classId:v.c,date:v.d,start:v.s,end:v.e,fee})}else for(let i=0;i<=Math.min(+v.r||0,52);i++)S.sessions.push({id:uid(),classId:v.c,date:iso(ad(dt(v.d),7*i)),start:v.s,end:v.e,fee})},s?()=>{S.sessions=S.sessions.filter(y=>y!==s)}:null)}
+const editS=id=>addS(null,S.sessions.find(x=>x.id==id));
+function editC(id){const c=S.classes.find(x=>x.id==id)||{};modal(id?'Sửa lớp':'Thêm lớp',[{k:'n',l:'Tên lớp',v:c.name},{k:'c',l:'Màu',t:'color',v:c.color||'#b7cde8'},{k:'f',l:'Học phí mỗi buổi (₫)',t:'number',v:c.fee||0}],v=>{if(!v.n.trim())return false;if(id)Object.assign(c,{name:v.n,color:v.c,fee:+v.f});else S.classes.push({id:uid(),name:v.n,color:v.c,fee:+v.f})},id?()=>{S.classes=S.classes.filter(x=>x.id!=id);S.sessions=S.sessions.filter(x=>x.classId!=id);const ids=S.students.filter(x=>x.classId==id).map(x=>x.id);S.students=S.students.filter(x=>x.classId!=id);S.logs=S.logs.filter(l=>!ids.includes(l.studentId))}:null)}
+function editSt(id){const s=S.students.find(x=>x.id==id)||{};modal(id?'Sửa học sinh':'Thêm học sinh',[{k:'n',l:'Họ tên',v:s.name},{k:'c',l:'Lớp',t:'select',o:copts(),v:s.classId||fcl||S.classes[0]?.id}],v=>{if(!v.n.trim()||!v.c)return false;if(id)Object.assign(s,{name:v.n,classId:v.c});else S.students.push({id:uid(),name:v.n,classId:v.c})},id?()=>{S.students=S.students.filter(x=>x.id!=id);S.logs=S.logs.filter(l=>l.studentId!=id)}:null)}
+function editL(id){const l=S.logs.find(x=>x.id==id)||{};modal(id?'Sửa nhật ký':'Thêm nhật ký buổi học',[{k:'d',l:'Ngày',t:'date',v:l.date||iso(new Date())},{k:'c',l:'Nội dung buổi học',t:'area',v:l.content},{k:'b',l:'Hoàn thành BTVN (%)',t:'number',v:l.btvn??''},{k:'y',l:'Ý thức',t:'select',o:['Tốt','Khá','Trung bình','Yếu'].map(x=>[x,x]),v:l.yt||'Tốt'},{k:'n',l:'Nhận xét',t:'area',v:l.note}],v=>{const o={date:v.d,content:v.c,btvn:v.b,yt:v.y,note:v.n};if(id)Object.assign(l,o);else S.logs.push({id:uid(),studentId:jsel,...o})},id?()=>{S.logs=S.logs.filter(x=>x.id!=id)}:null)}
+const NAV=[['ov','Tổng quan'],['sc','Lịch dạy'],['cl','Lớp học'],['st','Học sinh'],['jn','Nhật ký học tập'],['fe','Học phí']];
+function go(v){if(v)V=v;$('#nv').innerHTML='<h1>🌿 Lớp Dạy</h1>'+NAV.map(n=>`<button class="${V==n[0]?'on':''}" onclick="go('${n[0]}')">${n[1]}</button>`).join('');$('#mn').innerHTML=R[V]();}
+const head=(t,s,r)=>`<div class="hd"><div><h2>${t}</h2><p>${s}</p></div>${r||''}</div>`;
+const R={
+ov(){const ss=S.sessions.filter(x=>inM(x,M)),now=iso(new Date()),up=S.sessions.filter(x=>x.date>=now).sort((a,b)=>(a.date+a.start).localeCompare(b.date+b.start)).slice(0,6),y=M.slice(0,4),rev=[...Array(12)].map((_,i)=>sum(S.sessions.filter(x=>inM(x,y+'-'+p2(i+1))),x=>x.fee)),mx=Math.max(...rev,1);
+return head('Tổng quan lớp học','Theo dõi học tập và lịch dạy',mnav())+`<div class="stats"><div class="card"><b>${S.classes.length}</b><span>Số lớp học hiện tại</span></div><div class="card"><b>${S.students.length}</b><span>Học sinh đang theo học</span></div><div class="card"><b>${ss.length}</b><span>Buổi dạy trong tháng</span></div><div class="card"><b>${sum(ss,hr).toFixed(1)}h</b><span>Giờ dạy trong tháng</span></div><div class="card"><b>${money(sum(ss,x=>x.fee))}</b><span>Học phí tháng</span></div></div>
+<div class="g2"><div class="card"><h3 style="margin-top:0">Lịch dạy sắp tới</h3>${up.length?up.map(x=>`<div class="ch" style="background:${cls(x.classId).color}" onclick="editS('${x.id}')"><b>${x.date==now?'Hôm nay':DN[dt(x.date).getDay()]+' '+x.date.slice(8)+'/'+x.date.slice(5,7)}</b> · ${x.start}-${x.end} · ${esc(cls(x.classId).name)}</div>`).join(''):'<p class="mu">Chưa có buổi nào. Vào Lịch dạy để ghi buổi học mới.</p>'}</div>
+<div><div class="card"><h3 style="margin-top:0">Doanh thu năm ${y}</h3><div class="bars">${rev.map((v,i)=>`<div><i style="height:${v/mx*120}px"></i>T${i+1}</div>`).join('')}</div></div>
+<div class="card"><h3 style="margin-top:0">Doanh thu theo lớp (${mlab()})</h3>${S.classes.map(c=>({c,v:sum(ss.filter(x=>x.classId==c.id),x=>x.fee)})).map(o=>`<div class="rb"><div style="display:flex;justify-content:space-between;height:auto;margin:0"><span>${esc(o.c.name)}</span><span>${money(o.v)}</span></div><div style="background:${o.c.color};width:${o.v/(sum(ss,x=>x.fee)||1)*100}%"></div></div>`).join('')}</div></div></div>`},
+sc(){const a=mode=='week'?mon(cur):new Date(cur.getFullYear(),cur.getMonth(),1),b=mode=='week'?ad(a,6):new Date(cur.getFullYear(),cur.getMonth()+1,0),ss=S.sessions.filter(x=>x.date>=iso(a)&&x.date<=iso(b)).sort((x,y)=>x.start.localeCompare(y.start)),lab=mode=='week'?a.getDate()+'/'+(a.getMonth()+1)+' - '+b.getDate()+'/'+(b.getMonth()+1)+'/'+b.getFullYear():'Tháng '+(cur.getMonth()+1)+'/'+cur.getFullYear();
+let body='';if(mode=='week'){body='<div class="wk">'+[...Array(7)].map((_,i)=>{const d=ad(a,i),l=ss.filter(x=>x.date==iso(d));return `<div class="card dc" style="margin:0"><h4 style="cursor:pointer" onclick="addS('${iso(d)}')">${DN[d.getDay()]} · ${p2(d.getDate())}/${p2(d.getMonth()+1)}<small>${money(sum(l,x=>x.fee))}</small></h4>${l.map(chip).join('')}</div>`}).join('')+'</div>'}
+else{const s0=mon(a),n=Math.ceil(((b-s0)/864e5+1)/7)*7;body='<div class="mo7">'+['T2','T3','T4','T5','T6','T7','CN'].map(x=>`<b class="mu" style="text-align:center">${x}</b>`).join('')+[...Array(n)].map((_,i)=>{const d=ad(s0,i),k=iso(d),l=ss.filter(x=>x.date==k);return `<div class="mc ${d.getMonth()!=cur.getMonth()?'out':''} ${k==iso(new Date())?'td':''}"><b onclick="addS('${k}')">${d.getDate()}</b>${(d.getMonth()==cur.getMonth()?l:[]).map(x=>`<div class="ch" style="background:${cls(x.classId).color}" onclick="editS('${x.id}')">${esc(cls(x.classId).name)} ${x.start}</div>`).join('')}</div>`}).join('')+'</div>'}
+return head('Lịch dạy','Sắp xếp lịch dạy và tính công dạy',`<button class="b" onclick="addS()">+ Ghi buổi học mới</button>`)+`<div class="card"><div class="hd"><div class="nv"><button class="pill ${mode=='week'?'on':''}" onclick="mode='week';go()">Tuần</button><button class="pill ${mode=='month'?'on':''}" onclick="mode='month';go()">Tháng</button></div><div class="nv"><button class="b gh sm" onclick="mv(-1)">‹</button><button class="b gh sm" onclick="cur=new Date();go()">Hôm nay</button><button class="b gh sm" onclick="mv(1)">›</button><b>${lab}</b></div></div><div class="stats"><div class="card"><span>Tổng buổi</span><b>${ss.length}</b></div><div class="card"><span>Tổng giờ</span><b>${sum(ss,hr).toFixed(1)}</b></div><div class="card"><span>Tổng tiền</span><b>${money(sum(ss,x=>x.fee))}</b></div></div>${body}</div>`},
+cl(){return head('Lớp học','Quản lý lớp và học phí mỗi buổi',`<button class="b" onclick="editC()">+ Thêm lớp</button>`)+`<div class="stats">${S.classes.map(c=>`<div class="card" style="border-left:6px solid ${c.color}"><b>${esc(c.name)}</b><span>${money(c.fee)} / buổi<br>${S.students.filter(s=>s.classId==c.id).length} học sinh · ${S.sessions.filter(x=>x.classId==c.id).length} buổi</span><div class="row"><button class="b gh sm" onclick="editC('${c.id}')">Sửa</button></div></div>`).join('')}</div>`},
+st(){const l=S.students.filter(s=>!fcl||s.classId==fcl);return head('Học sinh','Danh sách học sinh theo lớp',`<button class="b" onclick="editSt()">+ Thêm học sinh</button>`)+`<div class="tabs"><button class="pill ${fcl?'':'on'}" onclick="fcl='';go()">Tất cả</button>${S.classes.map(c=>`<button class="pill ${fcl==c.id?'on':''}" onclick="fcl='${c.id}';go()">${esc(c.name)}</button>`).join('')}</div><div class="card tw"><table><tr><th>Họ tên</th><th>Lớp</th><th></th></tr>${l.map(s=>`<tr><td>${esc(s.name)}</td><td><span class="dot" style="background:${cls(s.classId).color}"></span>${esc(cls(s.classId).name)}</td><td><button class="b gh sm" onclick="editSt('${s.id}')">Sửa</button></td></tr>`).join('')||'<tr><td colspan="3" class="mu">Chưa có học sinh.</td></tr>'}</table></div>`},
+jn(){if(!S.students.find(s=>s.id==jsel))jsel=S.students[0]?.id;const s=S.students.find(x=>x.id==jsel),l=S.logs.filter(x=>x.studentId==jsel&&inM(x,M)).sort((a,b)=>a.date.localeCompare(b.date));
+return head('Nhật ký học tập','Ghi bài tập, ý thức và nhận xét sau từng buổi',mnav())+`<div class="tabs">${S.students.map(x=>`<button class="pill ${x.id==jsel?'on':''}" onclick="jsel='${x.id}';go()">${esc(x.name)} <small>(${esc(cls(x.classId).name)})</small></button>`).join('')||'<span class="mu">Thêm học sinh trước ở mục Học sinh.</span>'}</div>${s?`<div class="card tw"><div class="hd"><h3 style="margin:0">${esc(s.name)} · ${esc(cls(s.classId).name)} · ${mlab()}</h3><button class="b" onclick="editL()">+ Thêm nhật ký</button></div><table><tr><th>Buổi</th><th>Ngày</th><th>Nội dung</th><th>BTVN</th><th>Ý thức</th><th>Nhận xét</th><th></th></tr>${l.map((x,i)=>`<tr><td>${i+1}</td><td>${x.date.slice(8)}/${x.date.slice(5,7)}</td><td>${esc(x.content)}</td><td>${x.btvn!==''?esc(x.btvn)+'%':'-'}</td><td>${esc(x.yt)}</td><td>${esc(x.note)}</td><td><button class="b gh sm" onclick="editL('${x.id}')">Sửa</button></td></tr>`).join('')||'<tr><td colspan="7" class="mu">Tháng này chưa có nhật ký.</td></tr>'}</table></div>`:''}`},
+fe(){const ss=S.sessions.filter(x=>inM(x,M));return head('Học phí','Tổng hợp học phí và đánh dấu đã thu',mnav())+`<div class="card tw"><table><tr><th>Lớp</th><th>Số buổi</th><th>Số giờ</th><th>Học phí</th><th>Đã thu</th></tr>${S.classes.map(c=>{const l=ss.filter(x=>x.classId==c.id),k=M+c.id;return `<tr><td><span class="dot" style="background:${c.color}"></span>${esc(c.name)}</td><td>${l.length}</td><td>${sum(l,hr).toFixed(1)}</td><td>${money(sum(l,x=>x.fee))}</td><td><input type="checkbox" ${S.paid[k]?'checked':''} onchange="S.paid['${k}']=this.checked;save();go()"></td></tr>`}).join('')}<tr><td><b>Tổng</b></td><td><b>${ss.length}</b></td><td><b>${sum(ss,hr).toFixed(1)}</b></td><td><b>${money(sum(ss,x=>x.fee))}</b></td><td><b>${money(sum(S.classes.filter(c=>S.paid[M+c.id]),c=>sum(ss.filter(x=>x.classId==c.id),x=>x.fee)))}</b> đã thu</td></tr></table></div>`}};
+function mv(n){cur=mode=='week'?ad(cur,7*n):new Date(cur.getFullYear(),cur.getMonth()+n,1);go()}
+go();
+</script></body></html>
